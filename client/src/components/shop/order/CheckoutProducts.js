@@ -7,6 +7,9 @@ import { cartListProduct } from '../partials/FetchApi';
 import { getBrainTreeToken, getPaymentProcess } from './FetchApi';
 import { fetchData, fetchbrainTree, pay } from './Action';
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import DropIn from 'braintree-web-drop-in-react';
 
 const apiURL = process.env.REACT_APP_API_URL;
@@ -30,7 +33,21 @@ export const CheckoutComponent = props => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
+  const notify = () =>
+    toast.success('Order Succesfully placed', {
+      position: 'top-right',
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: 'light',
+      onClose: () => {
+        localStorage.setItem('cart', JSON.stringify([]));
+        history.push('/');
+      }
+    });
   if (data.loading) {
     return (
       <div className="flex items-center justify-center h-screen">
@@ -124,8 +141,9 @@ export const CheckoutComponent = props => {
                     }}
                   /> */}
                   <div
-                    onClick={e =>
-                      pay(
+                    onClick={async event => {
+                      event.preventDefault();
+                      const success = await pay(
                         data,
                         dispatch,
                         state,
@@ -133,13 +151,27 @@ export const CheckoutComponent = props => {
                         getPaymentProcess,
                         totalCost,
                         history
-                      )
-                    }
+                      );
+                      event.preventDefault();
+                      if (success) {
+                        notify();
+
+                        // const myPromise = new Promise((resolve, reject) => {
+                        //   notify();
+                        //   resolve(true);
+                        // });
+                        // myPromise.then(() => {
+                        //   localStorage.setItem('cart', JSON.stringify([]));
+                        //   history.push('/');
+                        // });
+                      }
+                    }}
                     className="w-full px-4 py-2 text-center text-white font-semibold cursor-pointer"
                     style={{ background: '#679641' }}>
                     Pay now
                   </div>
                 </div>
+                <ToastContainer />
               </Fragment>
             ) : (
               <div className="flex items-center justify-center py-12">

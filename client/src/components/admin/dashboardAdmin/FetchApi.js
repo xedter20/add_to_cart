@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from 'axios';
 const apiURL = process.env.REACT_APP_API_URL;
 
 export const DashboardData = async () => {
@@ -19,7 +19,7 @@ export const getSliderImages = async () => {
   }
 };
 
-export const postUploadImage = async (formData) => {
+export const postUploadImage = async formData => {
   try {
     let res = await axios.post(
       `${apiURL}/api/customize/upload-slide-image`,
@@ -31,11 +31,20 @@ export const postUploadImage = async (formData) => {
   }
 };
 
-export const postDeleteImage = async (id) => {
+export const postDeleteImage = async id => {
   try {
     let res = await axios.post(`${apiURL}/api/customize/delete-slide-image`, {
-      id,
+      id
     });
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getRevenue = async dateRanges => {
+  try {
+    let res = await axios.post(`${apiURL}/api/order/revenue`, dateRanges);
     return res.data;
   } catch (error) {
     console.log(error);

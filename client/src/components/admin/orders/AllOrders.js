@@ -1,12 +1,12 @@
-import React, { Fragment, useContext, useEffect } from "react";
-import moment from "moment";
+import React, { Fragment, useContext, useEffect } from 'react';
+import moment from 'moment';
 
-import { OrderContext } from "./index";
-import { fetchData, editOrderReq, deleteOrderReq } from "./Actions";
+import { OrderContext } from './index';
+import { fetchData, editOrderReq, deleteOrderReq } from './Actions';
 
 const apiURL = process.env.REACT_APP_API_URL;
 
-const AllCategory = (props) => {
+const AllCategory = props => {
   const { data, dispatch } = useContext(OrderContext);
   const { orders, loading } = data;
 
@@ -23,14 +23,12 @@ const AllCategory = (props) => {
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-        >
+          xmlns="http://www.w3.org/2000/svg">
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
             strokeWidth="2"
-            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-          ></path>
+            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
         </svg>
       </div>
     );
@@ -71,8 +69,7 @@ const AllCategory = (props) => {
               <tr>
                 <td
                   colSpan="12"
-                  className="text-xl text-center font-semibold py-8"
-                >
+                  className="text-xl text-center font-semibold py-8">
                   No order found
                 </td>
               </tr>
@@ -95,49 +92,54 @@ const CategoryTable = ({ order, editOrder }) => {
     <Fragment>
       <tr className="border-b">
         <td className="w-48 hover:bg-gray-200 p-2 flex flex-col space-y-1">
-          {order.allProduct.map((product, i) => {
-            return (
-              <span className="block flex items-center space-x-2" key={i}>
-                <img
-                  className="w-8 h-8 object-cover object-center"
-                  src={`${apiURL}/uploads/products/${product.id.pImages[0]}`}
-                  alt="productImage"
-                />
-                <span>{product.id.pName}</span>
-                <span>{product.quantitiy}x</span>
-              </span>
-            );
-          })}
+          {order.allProduct
+            // .filter(({ _id, name }) => _id && name)
+            .map((product, i) => {
+              console.log({ product: product.id.pImages });
+              return (
+                <span className="block flex items-center space-x-2" key={i}>
+                  <img
+                    className="w-8 h-8 object-cover object-center"
+                    // src={`${apiURL}/uploads/products/${product.pImages[0]}`}
+                    src={`${apiURL}/uploads/products/${product.id.pImages[0]}`}
+                    alt="productImage"
+                  />
+
+                  <span>{product.id.pName}</span>
+                  <span>{product.quantitiy}x</span>
+                </span>
+              );
+            })}
         </td>
         <td className="hover:bg-gray-200 p-2 text-center cursor-default">
-          {order.status === "Not processed" && (
+          {order.status === 'Not processed' && (
             <span className="block text-red-600 rounded-full text-center text-xs px-2 font-semibold">
               {order.status}
             </span>
           )}
-          {order.status === "Processing" && (
+          {order.status === 'Processing' && (
             <span className="block text-yellow-600 rounded-full text-center text-xs px-2 font-semibold">
               {order.status}
             </span>
           )}
-          {order.status === "Shipped" && (
+          {order.status === 'Shipped' && (
             <span className="block text-blue-600 rounded-full text-center text-xs px-2 font-semibold">
               {order.status}
             </span>
           )}
-          {order.status === "Delivered" && (
+          {order.status === 'Delivered' && (
             <span className="block text-green-600 rounded-full text-center text-xs px-2 font-semibold">
               {order.status}
             </span>
           )}
-          {order.status === "Cancelled" && (
+          {order.status === 'Cancelled' && (
             <span className="block text-red-600 rounded-full text-center text-xs px-2 font-semibold">
               {order.status}
             </span>
           )}
         </td>
         <td className="hover:bg-gray-200 p-2 text-center">
-        ₱{order.amount}.00
+          ₱{order.amount}.00
         </td>
         <td className="hover:bg-gray-200 p-2 text-center">
           {order.transactionId}
@@ -149,22 +151,20 @@ const CategoryTable = ({ order, editOrder }) => {
         <td className="hover:bg-gray-200 p-2 text-center">{order.phone}</td>
         <td className="hover:bg-gray-200 p-2 text-center">{order.address}</td>
         <td className="hover:bg-gray-200 p-2 text-center">
-          {moment(order.createdAt).format("lll")}
+          {moment(order.createdAt).format('lll')}
         </td>
         <td className="hover:bg-gray-200 p-2 text-center">
-          {moment(order.updatedAt).format("lll")}
+          {moment(order.updatedAt).format('lll')}
         </td>
         <td className="p-2 flex items-center justify-center">
           <span
-            onClick={(e) => editOrder(order._id, true, order.status)}
-            className="cursor-pointer hover:bg-gray-200 rounded-lg p-2 mx-1"
-          >
+            onClick={e => editOrder(order._id, true, order.status)}
+            className="cursor-pointer hover:bg-gray-200 rounded-lg p-2 mx-1">
             <svg
               className="w-6 h-6 fill-current text-green-500"
               fill="currentColor"
               viewBox="0 0 20 20"
-              xmlns="http://www.w3.org/2000/svg"
-            >
+              xmlns="http://www.w3.org/2000/svg">
               <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
               <path
                 fillRule="evenodd"
@@ -174,16 +174,14 @@ const CategoryTable = ({ order, editOrder }) => {
             </svg>
           </span>
           <span
-            onClick={(e) => deleteOrderReq(order._id, dispatch)}
-            className="cursor-pointer hover:bg-gray-200 rounded-lg p-2 mx-1"
-          >
+            onClick={e => deleteOrderReq(order._id, dispatch)}
+            className="cursor-pointer hover:bg-gray-200 rounded-lg p-2 mx-1">
             <svg
               className="w-6 h-6 text-red-500"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
+              xmlns="http://www.w3.org/2000/svg">
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"

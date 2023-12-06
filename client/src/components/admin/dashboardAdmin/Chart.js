@@ -1,115 +1,115 @@
-import React from 'react';
-import { defaults } from 'chart.js/auto';
-import { Bar, Doughnut, Line } from 'react-chartjs-2';
+import React, { Fragment, useContext, useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
+import moment from 'moment';
+import { getRevenue } from './FetchApi';
+import {
+  CartesianGrid,
+  Legend,
+  ResponsiveContainer,
+  Scatter,
+  ScatterChart,
+  Tooltip,
+  XAxis,
+  YAxis,
+  LineChart,
+  AreaChart,
+  Area
+} from 'recharts';
+import 'react-date-range/dist/styles.css'; // main style file
+import 'react-date-range/dist/theme/default.css'; // theme css file
 
-import './Chart.css';
+import { DateRangePicker } from 'rsuite';
+import 'rsuite/dist/rsuite.css';
+const TimeSeriesChart = () => {
+  const [data, setData] = useState([
+    {
+      total_sales: 200,
+      name: 'Dec 05,2023'
+    },
+    {
+      total_sales: 400,
+      name: 'Dec 05,2023'
+    },
+    {
+      total_sales: 4100,
+      name: 'Dec 08,2023'
+    }
+  ]);
+  const [isLoading, setIsLoading] = useState(false);
+  useEffect(() => {
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-import revenuedata from './data/revenuedata.json';
-import sourcedata from './data/sourcedata.json';
+  const fetchData = async dateRanges => {
+    try {
+      const result = await getRevenue(dateRanges);
 
-defaults.maintainAspectRatio = false;
-defaults.responsive = true;
+      setData(result.Revenue);
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const selectionRange = {
+    startDate: new Date(),
+    endDate: new Date(),
+    key: 'selection'
+  };
+  const formatter = value => `Php ${value}`;
 
-defaults.plugins.title.display = true;
-defaults.plugins.title.align = 'start';
-defaults.plugins.title.font.size = 20;
-defaults.plugins.title.color = 'black';
-
-const Chart = () => {
   return (
-    <div className="App">
-      <div className="dataCard revenueCard">
-        <Line
-          data={{
-            labels: revenuedata.map(data => data.label),
-            datasets: [
-              {
-                label: 'Revenue',
-                data: revenuedata.map(data => data.revenue),
-                backgroundColor: '#064FF0',
-                borderColor: '#064FF0'
-              },
-              {
-                label: 'Cost',
-                data: revenuedata.map(data => data.cost),
-                backgroundColor: '#FF3030',
-                borderColor: '#FF3030'
-              }
-            ]
-          }}
-          options={{
-            elements: {
-              line: {
-                tension: 0.5
-              }
-            },
-            plugins: {
-              title: {
-                text: 'Monthly Revenue & Cost'
-              }
-            }
-          }}
-        />
-      </div>
+    <div className="relative m-4 bg-white p-4 shadow-lg">
+      <div className="">
+        <div class="flex justify-start">
+          <div>
+            <h1 className="border-b-2 border-yellow-700 mb-4 pb-2 text-2xl font-semibold">
+              Revenue
+            </h1>
+          </div>
+          <div className="ml-4">
+            Select Date Range:
+            <DateRangePicker
+              // placeholder="Select Date"
+              onChange={async value => {
+                console.log(value);
+                await fetchData({
+                  from: value[0],
+                  to: value[1]
+                });
+              }}
+            />
+          </div>
+        </div>
 
-      <div className="dataCard customerCard">
-        <Bar
-          data={{
-            labels: sourcedata.map(data => data.label),
-            datasets: [
-              {
-                label: 'Count',
-                data: sourcedata.map(data => data.value),
-                backgroundColor: [
-                  'rgba(43, 63, 229, 0.8)',
-                  'rgba(250, 192, 19, 0.8)',
-                  'rgba(253, 135, 135, 0.8)'
-                ],
-                borderRadius: 5
-              }
-            ]
-          }}
-          options={{
-            plugins: {
-              title: {
-                text: 'Revenue Source'
-              }
-            }
-          }}
-        />
-      </div>
-
-      <div className="dataCard categoryCard">
-        <Doughnut
-          data={{
-            labels: sourcedata.map(data => data.label),
-            datasets: [
-              {
-                label: 'Count',
-                data: sourcedata.map(data => data.value),
-                backgroundColor: [
-                  'rgba(43, 63, 229, 0.8)',
-                  'rgba(250, 192, 19, 0.8)',
-                  'rgba(253, 135, 135, 0.8)'
-                ],
-                borderColor: [
-                  'rgba(43, 63, 229, 0.8)',
-                  'rgba(250, 192, 19, 0.8)',
-                  'rgba(253, 135, 135, 0.8)'
-                ]
-              }
-            ]
-          }}
-          options={{
-            plugins: {
-              title: {
-                text: 'Revenue Sources'
-              }
-            }
-          }}
-        />
+        {!isLoading && (
+          <ResponsiveContainer width="100%" height={500}>
+            <AreaChart
+              width={500}
+              height={400}
+              data={data}
+              margin={{
+                top: 10,
+                right: 30,
+                left: 0,
+                bottom: 0
+              }}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="name" />
+              <YAxis tickFormatter={formatter} />
+              <Tooltip />
+              <Area
+                type="monotone"
+                dataKey="total_sales"
+                stroke="#8884d8"
+                fill="#8884d8"
+              />
+            </AreaChart>
+          </ResponsiveContainer>
+        )}
       </div>
     </div>
   );
 };
-export default Chart;
+
+export default TimeSeriesChart;

@@ -8,7 +8,8 @@ import {
   PageNotFound,
   ProductDetails,
   ProductByCategory,
-  CheckoutPage
+  CheckoutPage,
+  Menu
 } from './shop';
 import {
   DashboardAdmin,
@@ -28,7 +29,7 @@ import {
   MyAppointment
 } from './shop/dashboardUser';
 
-import Menu from './shop/home/Menu';
+// import Menu from './shop/home/Menu';
 import About from '../components/shop/home/AboutUs';
 import Features from '../components/shop/home/Features';
 import Event from '../components/shop/home/Event';

@@ -59,23 +59,25 @@ export const pay = async (
         phone: state.phone
       };
 
-      console.log({ orderData });
       let resposeData = await createOrder(orderData);
 
-      console.log(1);
       if (resposeData.success) {
-        localStorage.setItem('cart', JSON.stringify([]));
+        // localStorage.setItem('cart', JSON.stringify([]));
         dispatch({ type: 'cartProduct', payload: null });
         dispatch({ type: 'cartTotalCost', payload: null });
         dispatch({ type: 'orderSuccess', payload: true });
-        setState({ clientToken: '', instance: {} });
+        // setState({ clientToken: '', instance: {} });
         dispatch({ type: 'loading', payload: false });
-        return history.push('/');
+
+        return true;
+        // return history.push('/');
       } else if (resposeData.error) {
         console.log(resposeData.error);
+        return false;
       }
     } catch (error) {
       console.log(error);
+      return false;
     }
     // nonce = data.nonce;
     // let paymentData = {

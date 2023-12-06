@@ -1,24 +1,24 @@
 /* eslint-disable jsx-a11y/iframe-has-title */
-import React, { Fragment, createContext, useReducer } from "react";
-import Layout from "../layout";
-import Slider from "./Slider";
-import ProductCategory from "./ProductCategory";
-import { homeState, homeReducer } from "./HomeContext";
-import location from "../../../Assets/location.png";
-import con1 from "../../../Assets/icon1.png";
-import con2 from "../../../Assets/icon2.png";
-import con3 from "../../../Assets/icon3.png";
-import con4 from "../../../Assets/icon4.png";
-import con5 from "../../../Assets/icon5.png";
-import con6 from "../../../Assets/icon6.png";
-import SingleProduct from "./SingleProduct";
+import React, { Fragment, createContext, useReducer } from 'react';
+import Layout from '../layout';
+import Slider from './Slider';
+import ProductCategory from './ProductCategory';
+import { homeState, homeReducer } from './HomeContext';
+import location from '../../../Assets/location.png';
+import con1 from '../../../Assets/icon1.png';
+import con2 from '../../../Assets/icon2.png';
+import con3 from '../../../Assets/icon3.png';
+import con4 from '../../../Assets/icon4.png';
+import con5 from '../../../Assets/icon5.png';
+import con6 from '../../../Assets/icon6.png';
+import SingleProduct from './SingleProduct';
 // import Chat from "./Chat";
 export const HomeContext = createContext();
 
 const HomeComponent = () => {
   const handleVisitButtonClick = () => {
     // Open the specified URL in a new tab
-    window.open("https://maps.app.goo.gl/HAmxu3Xbu3aqztmw7", '_blank');
+    window.open('https://maps.app.goo.gl/HAmxu3Xbu3aqztmw7', '_blank');
   };
   return (
     <Fragment>
@@ -33,7 +33,7 @@ const HomeComponent = () => {
       <section className="m-4 md:mx-8 md:my-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         <SingleProduct />
       </section>
-{/* <Chat/> */}
+      {/* <Chat/> */}
       <div className="w-full md:h-50 flex flex-col md:flex-row items-start py-5 md:py-20 sm:py-10 -mt-5 md:-mt-20">
         <div className="w-full md:w-3/4 bg-white flex flex-col p-5 md:p-20">
           <h1 className="text-center text-2xl p-2 md:p-5">DESCRIPTIONS</h1>
@@ -71,14 +71,11 @@ const HomeComponent = () => {
           </div>
         </div>
         <div className="w-1/4 pt-[13%] bg-white t-50 b-0  h-100 flex flex-col  ">
-          
-
           <div className="flex flex-col mr-[500px] mt-[20px]">
             <button
               type="submit"
-              className="mb-10 bg-[#C07936] w-40 h-12 hover:bg-[#679641] cursor-pointer m-auto text-white text-md font-medium text-center py-1 rounded-full mt-4"
-            >
-             Book Events Now!!!
+              className="mb-10 bg-[#C07936] w-40 h-12 hover:bg-[#679641] cursor-pointer m-auto text-white text-md font-medium text-center py-1 rounded-full mt-4">
+              Book Events Now!!!
             </button>
           </div>
         </div>
@@ -126,8 +123,7 @@ const HomeComponent = () => {
                       <h1 class="text-lg text-center">
                         <a
                           class="text-black font-semibold font-semibold"
-                          href="/"
-                        >
+                          href="/">
                           ORDER ONLINE
                         </a>
                       </h1>
@@ -236,7 +232,6 @@ const HomeComponent = () => {
         </h1>
       </div>
       <div className="w-full h-screen -mt-3 flex items-start ">
-      
         <div className="w-2/3 relative flex flex-col">
           <div className="flex-1">
             <img
@@ -254,8 +249,7 @@ const HomeComponent = () => {
               allowFullScreen
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
-              className="absolute bottom-0"
-            ></iframe>
+              className="absolute bottom-0"></iframe>
           </div>
         </div>
 
@@ -271,8 +265,7 @@ const HomeComponent = () => {
             <button
               type="submit"
               onClick={handleVisitButtonClick}
-              className="mb-10 bg-[#C07936] w-36 h-12 hover:bg-[#679641] cursor-pointer m-auto text-white text-md font-medium text-center py-1 rounded-full mt-4"
-            >
+              className="mb-10 bg-[#C07936] w-36 h-12 hover:bg-[#679641] cursor-pointer m-auto text-white text-md font-medium text-center py-1 rounded-full mt-4">
               Visit Now!!!
             </button>
           </div>
@@ -282,7 +275,7 @@ const HomeComponent = () => {
   );
 };
 
-const Home = (props) => {
+const Home = props => {
   const [data, dispatch] = useReducer(homeReducer, homeState);
   return (
     <Fragment>
@@ -293,4 +286,4 @@ const Home = (props) => {
   );
 };
 
-export default Home;  
+export default Home;

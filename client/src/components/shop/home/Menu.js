@@ -1,13 +1,13 @@
-import React, { Fragment, createContext, useReducer } from "react";
-import Layout from "../layout";
-import ProductCategory from "./ProductCategory";
-import { homeState, homeReducer } from "./HomeContext";
-import SingleProduct from "./SingleProduct";
+import React, { Fragment, createContext, useReducer } from 'react';
+import Layout from '../layout';
+import ProductCategory from './ProductCategory';
+import { homeState, homeReducer } from './HomeContext';
+import SingleProduct from './SingleProduct';
 
 export const HomeContext = createContext();
 
-const Menus = () => {
-  return (  
+const MenuComponent = () => {
+  return (
     <Fragment>
       {/* Category, Search & Filter Section */}
       <section className="m-4 md:mx-8 md:my-6">
@@ -21,13 +21,13 @@ const Menus = () => {
   );
 };
 
-const Menu = (props) => {
+const Menu = props => {
   const [data, dispatch] = useReducer(homeReducer, homeState);
-  console.log("Context values in ProductCategory:", data, dispatch);
+
   return (
     <Fragment>
       <HomeContext.Provider value={{ data, dispatch }}>
-        <Layout children={<Menus />} />
+        <Layout children={<MenuComponent />} />
       </HomeContext.Provider>
     </Fragment>
   );
