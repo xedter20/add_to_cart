@@ -23,6 +23,26 @@ export const loginReq = async ({ email, password }) => {
     console.log(error);
   }
 };
+export const getUserById = async uId => {
+  try {
+    let res = await axios.post(`${apiURL}/api/user/signle-user`, { uId });
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const fetchUser = async dispatch => {
+  let userId = JSON.parse(localStorage.getItem('jwt'))
+    ? JSON.parse(localStorage.getItem('jwt')).user._id
+    : '';
+  try {
+    let responseData = await getUserById(userId);
+    return responseData;
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 export const signupReq = async ({ name, email, password, cPassword }) => {
   const data = { name, email, password, cPassword };

@@ -2,7 +2,7 @@ import React, { Fragment, useContext } from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
 import { logout } from './Action';
 import { DashboardUserContext } from './Layout';
-
+const apiURL = process.env.REACT_APP_API_URL;
 const Sidebar = props => {
   const { data } = useContext(DashboardUserContext);
 
@@ -15,21 +15,30 @@ const Sidebar = props => {
         <div
           style={{ background: '#679641' }}
           className="flex items-center space-x-2 rounded shadow p-2 text-gray-100">
-          <svg
-            className="cursor-pointer w-16 h-16 text-gray-100"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg">
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+          {data.userDetails ? (
+            <img
+              className="w-10 h-10 object-cover object-center"
+              src={`${apiURL}/uploads/user/${data.userDetails.userImage}`}
+              alt="pic"
             />
-          </svg>
+          ) : (
+            <svg
+              className="cursor-pointer w-8 h-8 text-gray-600 hover:text-gray-800"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg">
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+          )}
           <div className="flex flex-col w-full">
             <span className="text-sm">Hello,</span>
+
             <span className="text-lg">
               {data.userDetails ? data.userDetails.name : ''}
             </span>

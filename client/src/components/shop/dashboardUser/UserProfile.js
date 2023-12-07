@@ -1,19 +1,20 @@
-import React, { Fragment, useContext, useState, useEffect } from "react";
-import Layout from "./Layout";
-import { DashboardUserContext } from "./Layout";
-import { updatePersonalInformationAction } from "./Action";
-
+import React, { Fragment, useContext, useState, useEffect } from 'react';
+import Layout from './Layout';
+import { DashboardUserContext } from './Layout';
+import { updatePersonalInformationAction } from './Action';
+const apiURL = process.env.REACT_APP_API_URL;
 const ProfileComponent = () => {
   const { data, dispatch } = useContext(DashboardUserContext);
-  const userDetails = data.userDetails !== null ? data.userDetails : "";
+  const userDetails = data.userDetails !== null ? data.userDetails : '';
 
   const [fData, setFdata] = useState({
-    id: "",
-    name: "",
-    email: "",
-    phone: "",
-    address: "",
+    id: '',
+    name: '',
+    email: '',
+    phone: '',
+    address: '',
     success: false,
+    userImage: ''
   });
 
   useEffect(() => {
@@ -24,6 +25,7 @@ const ProfileComponent = () => {
       email: userDetails.email,
       phone: userDetails.phoneNumber,
       address: userDetails.address,
+      userImage: userDetails.userImage
     });
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -41,14 +43,12 @@ const ProfileComponent = () => {
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-        >
+          xmlns="http://www.w3.org/2000/svg">
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
             strokeWidth="2"
-            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-          ></path>
+            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
         </svg>
       </div>
     );
@@ -67,12 +67,12 @@ const ProfileComponent = () => {
                 {fData.success}
               </div>
             ) : (
-              ""
+              ''
             )}
             <div className="flex flex-col space-y-2">
               <label htmlFor="name">Name</label>
               <input
-                onChange={(e) => setFdata({ ...fData, name: e.target.value })}
+                onChange={e => setFdata({ ...fData, name: e.target.value })}
                 value={fData.name}
                 type="text"
                 id="name"
@@ -92,10 +92,39 @@ const ProfileComponent = () => {
                 You can't change your email
               </span>
             </div>
+            <div class="grid md:grid-cols-2 md:gap-6">
+              <div class="relative z-0 w-full mb-5 group">
+                <label htmlFor="image">Profile Picture</label>
+                <input
+                  onChange={e =>
+                    setFdata({
+                      ...fData,
+                      error: false,
+                      success: false,
+                      uImage: [...e.target.files]
+                    })
+                  }
+                  type="file"
+                  accept=".jpg, .jpeg, .png"
+                  className="px-4 py-2 border focus:outline-none"
+                  id="image"
+                  multiple
+                />
+              </div>
+              <div class="relative z-0 w-full mb-5 group">
+                <img
+                  className="w-20 h-20 object-cover object-center"
+                  src={`${apiURL}/uploads/user/${fData.userImage}`}
+                  alt="pic"
+                />
+              </div>
+            </div>
+            <div className="flex flex-col mt-4"></div>
+
             <div className="flex flex-col space-y-2">
               <label htmlFor="number">Phone Number</label>
               <input
-                onChange={(e) => setFdata({ ...fData, phone: e.target.value })}
+                onChange={e => setFdata({ ...fData, phone: e.target.value })}
                 value={fData.phone}
                 type="number"
                 id="number"
@@ -105,7 +134,7 @@ const ProfileComponent = () => {
             <div className="flex flex-col space-y-2">
               <label htmlFor="address">Address</label>
               <input
-                onChange={(e) => setFdata({ ...fData, address: e.target.value })}
+                onChange={e => setFdata({ ...fData, address: e.target.value })}
                 value={fData.address}
                 type="text"
                 id="address"
@@ -113,10 +142,9 @@ const ProfileComponent = () => {
               />
             </div>
             <div
-              onClick={(e) => handleSubmit()}
-              style={{ background: "#679641" }}
-              className="w-full text-center cursor-pointer px-4 py-2 text-gray-100"
-            >
+              onClick={e => handleSubmit()}
+              style={{ background: '#679641' }}
+              className="w-full text-center cursor-pointer px-4 py-2 text-gray-100">
               Update Information
             </div>
           </div>
@@ -126,7 +154,7 @@ const ProfileComponent = () => {
   );
 };
 
-const UserProfile = (props) => {
+const UserProfile = props => {
   return (
     <Fragment>
       <Layout children={<ProfileComponent />} />

@@ -69,6 +69,8 @@ class User {
 
   async postEditUser(req, res) {
     let { uId, name, phoneNumber, address } = req.body;
+    let uImage = req.files;
+
     if (!uId || !name || !phoneNumber || !address) {
       return res.json({ message: 'All filled must be required' });
     } else {
@@ -76,7 +78,8 @@ class User {
         name: name,
         phoneNumber: phoneNumber,
         updatedAt: Date.now(),
-        address: address
+        address: address,
+        userImage: uImage[0].filename
       });
       currentUser.exec((err, result) => {
         if (err) console.log(err);
